@@ -167,13 +167,20 @@ INSERT users (birthday) VALUES (FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:2
 SELECT COUNT(id), DAYOFWEEK(birthday) from users GROUP by DAYOFWEEK(birthday);
 
 
+/*
+ * (по желанию) Подсчитайте произведение чисел в столбце таблицы
+ */
 
 
+drop table if EXISTS numbers;
+create table numbers(
+	id serial PRIMARY key,
+	n int(11)
+);
 
+insert numbers (n) VALUES (6),(4),(2),(5),(1),(8),(1);
 
-
-
-
+SELECT exp(SUM(log(n))) FROM numbers;
 
 
 
