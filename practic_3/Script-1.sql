@@ -79,6 +79,94 @@ SELECT value from storehouses_products  ORDER BY value=0  , value;
 
 
 
+/*
+ * (по желанию) Из таблицы users необходимо извлечь пользователей,
+ *  родившихся в августе и мае. Месяцы заданы в виде списка 
+ *  английских названий ('may', 'august')
+ */
+
+
+ALTER TABLE users ADD birthday_mounth ENUM('January','February','March','April','May','June', 'July','August','September','October','November','December');
+
+insert into users (created_at, updated_at, birthday_mounth) values (CURDATE(),NOW(),'April'),
+												(CURDATE(),NOW(),'February'),
+												(CURDATE(),NOW(),'May'),
+												(CURDATE(),NOW(),'May'),
+												(CURDATE(),NOW(),'August'),
+												(CURDATE(),NOW(),'August'),
+												(CURDATE(),NOW(),'March');
+												
+SELECT * FROM users WHERE birthday_mounth = 'may' or birthday_mounth = 'august' ;
+
+
+
+
+/*
+ * (по желанию) Из таблицы catalogs извлекаются записи при помощи запроса. 
+ * SELECT * FROM catalogs WHERE id IN (5, 1, 2); Отсортируйте записи в порядке, 
+ * заданном в списке IN.
+ */
+ 
+drop table if exists catalogs;
+create table catalogs(
+	id serial PRIMARY KEY,
+	name varchar(100)
+);
+
+INSERT catalogs (name) values ('1'),
+							('2'),
+							('1'),
+							('5'),
+							('2'),
+							('6'),
+							('7'),
+							('1'),
+							('5'),	
+							('2');
+						
+				
+SELECT * FROM catalogs WHERE id IN (5, 1, 2) ORDER by  FIELD (id,5,1,2);
+
+/*
+ * Подсчитайте средний возраст пользователей в таблице user
+ */
+
+ALTER TABLE users ADD age int(11);
+
+INSERT users (age) values ('51'),
+							('42'),
+							('31'),
+							('52'),
+							('26'),
+							('26'),
+							('17'),
+							('31'),
+							('55'),	
+							('26');
+
+SELECT AVG(age) from users; 
+
+/*
+ * Подсчитайте количество дней рождения, которые приходятся на каждый из дней недели. 
+ * Следует учесть, что необходимы дни недели текущего года, а не года рождения.
+*/
+ALTER TABLE users ADD birthday datetime;
+
+INSERT users (birthday) VALUES (FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000)))),
+(FROM_UNIXTIME(UNIX_TIMESTAMP('2010-04-30 14:53:27') + FLOOR(0 + (RAND() * 63072000))));
+
+SELECT COUNT(id), DAYOFWEEK(birthday) from users GROUP by DAYOFWEEK(birthday);
+
+
 
 
 
